@@ -1,4 +1,5 @@
 import torch
+from pathlib import Path
 
 def accuracy_fn(y_true, y_pred):
     correct = torch.eq(y_true, y_pred).sum().item()
@@ -18,3 +19,10 @@ def eval(model , dataloader , loss_fn ,  metrics , device):
     acc /= len(dataloader)
 
     print(f"loss : {loss} , accuracy : {acc}")
+
+def save_model(model,target_path,model_name):
+    target_dir = Path(target_path)
+    target_dir.mkdir(parents=True,exist_ok=True)
+    saving_path = target_dir/model_name
+    torch.save(obj = model.state_dict() , f = saving_path)
+    print(f"Model save at : {saving_path}")
